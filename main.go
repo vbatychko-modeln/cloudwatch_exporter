@@ -92,16 +92,12 @@ func handleTarget(w http.ResponseWriter, req *http.Request) {
 func main() {
 	flag.Parse()
 
-	globalRegistry = prometheus.NewRegistry()
-
 	totalRequests = prometheus.NewCounter(prometheus.CounterOpts{
 		Name: "cloudwatch_requests_total",
 		Help: "API requests made to CloudWatch",
 	})
 
-	globalRegistry.MustRegister(totalRequests)
-
-	prometheus.DefaultGatherer = globalRegistry
+	prometheus.MustRegister(totalRequests)
 
 	err := loadConfigFile()
 	if err != nil {
